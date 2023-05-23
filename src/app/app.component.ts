@@ -63,7 +63,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     const h1 = document.createElement('h1');
 
     this.unSelectItems(this.resizeEast, this.resizeWest, this.resizeSouthEast);
-    container.classList.add('resizable', 'border', 'border-dashed', 'border-black', 'absolute', 'flex', 'items-center', 'p-2');
+    container.classList.add('resizable', 'border', 'border-dashed', 'border-black', 'absolute', 'flex', 'items-center', 'p-2', 'cursor-move');
     container.id = crypto.randomUUID();
 
     h1.innerHTML = 'Text goes here ...';
@@ -84,7 +84,6 @@ export class AppComponent implements OnInit, AfterViewInit{
       id: container.id, ele: container, content: h1.innerText,
       posX: container.getBoundingClientRect().x, posY: container.getBoundingClientRect().y,
       height: container.clientHeight, width: container.clientWidth,
-      resize: this.attachShapeEvent(container.id),
       type: "text"
     });
 
@@ -92,11 +91,10 @@ export class AppComponent implements OnInit, AfterViewInit{
       id: container.id, ele: container,
       content: h1.innerText, posX: container.getBoundingClientRect().x, posY: container.getBoundingClientRect().y ,
       height: container.clientHeight, width: container.clientWidth,
-      resize: this.elements.find(u => u.id === container.id)?.resize,
       type: this.elements.find(u => u.id === container.id)?.type
     };
 
-    this.makeElementResizable();
+    this.attachTextEvent(container.id);
     this.showPortal = false;
     this.showTextEdit = true;
     this.showShapeEditor = false;
@@ -123,7 +121,6 @@ export class AppComponent implements OnInit, AfterViewInit{
         id: container.id, ele: container,
         content: h1.innerText, posX: container.getBoundingClientRect().x, posY: container.getBoundingClientRect().y ,
         height: container.clientHeight, width: container.clientWidth,
-        resize: this.elements.find(u => u.id === container.id)?.resize,
         type: this.elements.find(u => u.id === container.id)?.type
       };
     }, false)
@@ -134,7 +131,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     const circle = document.createElement('div');
 
     this.unSelectItems(this.resizeEast, this.resizeWest, this.resizeSouthEast);
-    container.classList.add('resizable', 'border', 'border-dashed', 'border-black', 'cursor-move', 'absolute', 'flex', 'items-center', 'p-2');
+    container.classList.add('resizable', 'border', 'border-dashed', 'border-black', 'cursor-move', 'absolute', 'flex', 'items-center', 'p-2', 'cursor-move');
     container.id = crypto.randomUUID();
 
     circle.classList.add('rounded-full', 'outline', 'outline-black', 'outline-2');
@@ -160,11 +157,10 @@ export class AppComponent implements OnInit, AfterViewInit{
       id: container.id, ele: container,
       content: '', posX: container.getBoundingClientRect().x, posY: container.getBoundingClientRect().y ,
       height: container.clientHeight, width: container.clientWidth,
-      resize: this.elements.find(u => u.id === container.id)?.resize,
       type: this.elements.find(u => u.id === container.id)?.type
     };
 
-    this.makeShapeResizable();
+    this.attachShapeEvent(container.id);
     this.showPortal = false;
     this.showTextEdit = false;
     this.showShapeEditor = true;
@@ -186,7 +182,6 @@ export class AppComponent implements OnInit, AfterViewInit{
         id: container.id, ele: container,
         content: '', posX: container.getBoundingClientRect().x, posY: container.getBoundingClientRect().y ,
         height: container.clientHeight, width: container.clientWidth,
-        resize: this.elements.find(u => u.id === container.id)?.resize,
         type: this.elements.find(u => u.id === container.id)?.type
       };
     }
@@ -246,7 +241,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     let resize = new Resizable(p, {
       handles: 'e, w',
       threshold: 10,
-      draggable: false
+      draggable: true
     })
 
     p?.addEventListener('drag', (event) => {
@@ -272,7 +267,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     let resize = new Resizable(p, {
       handles: 'se',
       threshold: 10,
-      draggable: false
+      draggable: true
     })
 
     p?.addEventListener('drag', (event) => {
@@ -299,7 +294,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     let resize = new Resizable(p, {
       handles: 'se',
       threshold: 10,
-      draggable: false
+      draggable: true
     })
 
     p?.addEventListener('drag', (event) => {
@@ -360,7 +355,6 @@ export class AppComponent implements OnInit, AfterViewInit{
       id: container.id, ele: container, content: image.src,
       posX: container.getBoundingClientRect().x, posY: container.getBoundingClientRect().y,
       height: container.clientHeight, width: container.clientWidth,
-      resize: this.attachImageEvent(container.id),
       type: "image"
     });
 
@@ -368,11 +362,10 @@ export class AppComponent implements OnInit, AfterViewInit{
       id: container.id, ele: container,
       content: image.src, posX: container.getBoundingClientRect().x, posY: container.getBoundingClientRect().y ,
       height: container.clientHeight, width: container.clientWidth,
-      resize: this.elements.find(u => u.id === container.id)?.resize,
       type: this.elements.find(u => u.id === container.id)?.type
     };
 
-    this.makeImageResizable();
+    this.attachImageEvent(container.id);
     this.showPortal = false;
 
     container.addEventListener('click', (event) => {
@@ -389,13 +382,10 @@ export class AppComponent implements OnInit, AfterViewInit{
         id: container.id, ele: container,
         content: image.src, posX: container.getBoundingClientRect().x, posY: container.getBoundingClientRect().y ,
         height: container.clientHeight, width: container.clientWidth,
-        resize: this.elements.find(u => u.id === container.id)?.resize,
         type: this.elements.find(u => u.id === container.id)?.type
       };
 
     }, false)
-
-
 
 
     if (file.target.files && file.target.files[0]) {
@@ -432,113 +422,38 @@ export class AppComponent implements OnInit, AfterViewInit{
 
   }
 
-  dragElement(elmnt: HTMLElement) {
-    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    elmnt.onmousedown = dragMouseDown;
-
-    function dragMouseDown(e:any) {
-      e.preventDefault();
-      // get the mouse cursor position at startup:
-      pos3 = e.clientX;
-      pos4 = e.clientY;
-      document.onmouseup = closeDragElement;
-      // call a function whenever the cursor moves:
-      document.onmousemove = elementDrag;
-    }
-
-    function elementDrag(e: any) {
-      e.preventDefault();
-      // calculate the new cursor position:
-      pos1 = pos3 - e.clientX;
-      pos2 = pos4 - e.clientY;
-      pos3 = e.clientX;
-      pos4 = e.clientY;
-      // set the element's new position:
-      elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-      elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-    }
-
-    function closeDragElement() {
-      // stop moving when mouse button is released:
-      document.onmouseup = null;
-      document.onmousemove = null;
-    }
-  }
-
-  makeElementResizable = () => {
-    if (this.selectedElement?.id) {
-      this.resizableMenu = true;
-      this.draggableMenu = false;
-      const findElement = this.elements.find(u => u.id === this.selectedElement.id);
-
-      if (findElement) {
-        const ele = (findElement as ElementInfo);
-        ele.ele.classList.remove('cursor-move');
-
-        ele.ele.onmousedown = null;
-
-        this.selectedElement.resize = this.attachTextEvent(this.selectedElement.id);
-
-        (findElement as ElementInfo).resize = this.selectedElement.resize;
-      }
-    }
-  }
-
-  makeShapeResizable = () => {
-    if (this.selectedElement?.id) {
-      this.resizableMenu = true;
-      this.draggableMenu = false;
-      const findElement = this.elements.find(u => u.id === this.selectedElement.id);
-
-      if (findElement) {
-        const ele = (findElement as ElementInfo);
-        ele.ele.classList.remove('cursor-move');
-
-        ele.ele.onmousedown = null;
-
-        this.selectedElement.resize = this.attachShapeEvent(this.selectedElement.id);
-
-        (findElement as ElementInfo).resize = this.selectedElement.resize;
-      }
-    }
-  }
-
-  makeImageResizable = () => {
-    if (this.selectedElement?.id) {
-      this.resizableMenu = true;
-      this.draggableMenu = false;
-      const findElement = this.elements.find(u => u.id === this.selectedElement.id);
-
-      if (findElement) {
-        const ele = (findElement as ElementInfo);
-        ele.ele.classList.remove('cursor-move');
-
-        ele.ele.onmousedown = null;
-
-        this.selectedElement.resize = this.attachImageEvent(this.selectedElement.id);
-
-        (findElement as ElementInfo).resize = this.selectedElement.resize;
-      }
-    }
-  }
-
-  makeElementDraggable = () => {
-    if (this.selectedElement) {
-      this.resizableMenu = false;
-      this.draggableMenu = true;
-      const findElement = this.elements.find(u => u.id === this.selectedElement.id);
-
-      if (findElement) {
-        this.selectedElement.resize.destroy();
-
-        const ele = (findElement as ElementInfo);
-        ele.ele.classList.add('cursor-move');
-
-        ele.resize = null;
-        this.dragElement(ele.ele);
-      }
-    }
-  }
+  // dragElement(elmnt: HTMLElement) {
+  //   let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  //   elmnt.onmousedown = dragMouseDown;
+  //
+  //   function dragMouseDown(e:any) {
+  //     e.preventDefault();
+  //     // get the mouse cursor position at startup:
+  //     pos3 = e.clientX;
+  //     pos4 = e.clientY;
+  //     document.onmouseup = closeDragElement;
+  //     // call a function whenever the cursor moves:
+  //     document.onmousemove = elementDrag;
+  //   }
+  //
+  //   function elementDrag(e: any) {
+  //     e.preventDefault();
+  //     // calculate the new cursor position:
+  //     pos1 = pos3 - e.clientX;
+  //     pos2 = pos4 - e.clientY;
+  //     pos3 = e.clientX;
+  //     pos4 = e.clientY;
+  //     // set the element's new position:
+  //     elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+  //     elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  //   }
+  //
+  //   function closeDragElement() {
+  //     // stop moving when mouse button is released:
+  //     document.onmouseup = null;
+  //     document.onmousemove = null;
+  //   }
+  // }
 
   openShapesMenu = () => {
     this.showPortal = true;
@@ -547,17 +462,6 @@ export class AppComponent implements OnInit, AfterViewInit{
   createShape = (shapes: ShapesEnum) => {
     if (shapes === ShapesEnum.CIRCLE) {
       this.createCircle();
-    }
-  }
-
-  resizeElement = () => {
-    if (this.selectedElement) {
-      if (this.selectedElement.type === 'text') {
-        this.makeElementResizable();
-      }
-      if (this.selectedElement.type === 'shape') {
-        this.makeShapeResizable();
-      }
     }
   }
 }
