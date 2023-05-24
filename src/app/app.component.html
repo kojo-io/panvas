@@ -20,9 +20,12 @@
                 <div class="px-4">
                   <img src="assets/shapes.png" (click)="openShapesMenu()" alt="img" class="h-[35px] w-[35px] cursor-pointer">
                 </div>
+                <div class="flex space-x-4 px-4 items-center">
+                  <pi-button type="primary" size="small">forward</pi-button>
+                </div>
               </div>
-              <div class="grow h-full w-full overflow-auto">
-                <div class="border border-gray-400 shadow-lg h-full w-full flex relative drag-box bg-white overflow-hidden" (click)="selectBackground()">
+              <div class="grow h-full w-full overflow-auto flex justify-center items-center">
+                <div class="border border-gray-400 shadow-lg card-dimensions flex relative drag-box bg-white overflow-hidden" (click)="selectBackground()">
                 </div>
               </div>
             </div>
@@ -39,7 +42,9 @@
               </ng-container>
             </ng-container>
             <ng-container *ngIf="showShapeEditor">
-              Shape Editor
+              <div class="w-full">
+
+              </div>
             </ng-container>
           </div>
         </div>
@@ -51,7 +56,10 @@
 <div class="hidden">
   <div class="absolute -right-2 w-4 h-4 bg-black border border-white resize-node-e pointer-events-none"> </div>
   <div class="absolute -left-2 w-4 h-4 bg-black border border-white resize-node-w pointer-events-none"> </div>
-  <div class="absolute -right-2 -bottom-2 w-4 h-4 bg-black border border-white resize-node-se"> </div>
+  <div class="absolute -right-2 -bottom-2 w-4 h-4 bg-black border border-white resize-node-se pointer-events-none"> </div>
+  <div class="absolute -left-2 -bottom-2 w-4 h-4 bg-black border border-white resize-node-sw pointer-events-none"> </div>
+  <div class="absolute -left-2 -top-2 w-4 h-4 bg-black border border-white resize-node-nw pointer-events-none"> </div>
+  <div class="absolute -right-2 -top-2 w-4 h-4 bg-black border border-white resize-node-ne pointer-events-none"> </div>
 </div>
 
 <input type="file" accept="image/*" (change)="onImageChange($event)" #photo hidden>
