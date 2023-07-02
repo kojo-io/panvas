@@ -1,0 +1,31 @@
+<div>
+  <ng-container *ngIf="label">
+    <label [for]="id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+      {{label}}
+      <ng-container *ngIf="required">
+        <span class="text-red-600 text-lg">*</span>
+      </ng-container>
+    </label>
+  </ng-container>
+  <input
+    [type]="type"
+    [id]="id"
+    [(ngModel)]="model"
+    [readOnly]="readOnly"
+    [disabled]="disabled"
+    [placeholder]="placeholder"
+    class="{{defaultClass}} {{invalid ? (required ? invalidClass: inputValidClass) : inputValidClass}} {{size === 'small' && smallSize}} {{size === 'normal' && defaultSize}} {{size === 'large' && largeSize}}"
+    (ngModelChange)="onChange($event)" />
+  <ng-container *ngIf="invalid">
+    <ng-container *ngIf="required">
+      <small class="text-red-600">
+        <ng-container *ngIf="name; else labelTemp">
+          {{name}} is required
+        </ng-container>
+        <ng-template #labelTemp>
+          {{label}} is required
+        </ng-template>
+      </small>
+    </ng-container>
+  </ng-container>
+</div>

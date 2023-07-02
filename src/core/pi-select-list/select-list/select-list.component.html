@@ -1,0 +1,37 @@
+<div class="relative w-full">
+    <div class="relative">
+        <input placeholder="{{placeholder}}" [id]="id"
+               [readOnly]="!searchable"
+               [(ngModel)]="displayLabel"
+               (ngModelChange)="searchList($event)"
+               select-list="pi-select-list"
+               class="block pr-10 p-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"/>
+        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <div class="flex flex-col">
+                <i class="pi pi-chevron-up text-gray-500 text-xs" ></i>
+                <i class="pi pi-chevron-down text-gray-500 text-xs" ></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="absolute border mt-2 rounded-[5px] min-w-full divide-y bg-white z-10 select-list-container shadow-2xl {{id}} hidden" >
+        <ng-container *ngIf="showAddButton">
+            <div *ngIf="transformedData.length === 0" class="p-2 flex space-x-2 cursor-pointer items-center" (click)="addNew()">
+                <i class="pi pi-plus"></i>
+                <span class="block text-lg w-52 truncate" *ngIf="displayLabel">{{displayLabel}}</span>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="transformedData.length > 0">
+            <ng-container *ngFor="let item of transformedData">
+                <div (click)="selectItem(item)" class="p-2 cursor-pointer hover:bg-gray-200" [class.bg-gray-200]="displayValue === item.id">
+                    <span class="text-[14px] leading-[16px] font-[400]">{{item.value}}</span>
+                </div>
+            </ng-container>
+        </ng-container>
+        <ng-container *ngIf="transformedData.length === 0">
+            <div class="py-6 cursor-pointer text-center">
+                <span class="text-[14px] leading-[16px] font-[400]">List is empty</span>
+            </div>
+        </ng-container>
+    </div>
+</div>

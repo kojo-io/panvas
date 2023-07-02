@@ -1,0 +1,15 @@
+<div class="w-full space-y-3 p-4" id="closeNewCheckListItem" tabindex="-1" (keydown.escape)="close()">
+  <div class="space-y-3">
+    <div *ngIf="useCategories">
+      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+      <pi-select-list dataId="name" [(ngModel)]="newCategory" (ngModelChange)="setNewItem($event)" dataLabel="name" [data]="categories" [showAddButton]="true" (addNewItem)="setNewItem($event)" placeholder="Select Category" [searchable]="true"></pi-select-list>
+    </div>
+    <form [formGroup]="form">
+      <pi-input formControlName="item" size="large" label="Check List Item" placeholder="Enter Check List Item"></pi-input>
+    </form>
+  </div>
+  <div class="h-auto flex space-x-2 w-full">
+    <pi-button type="danger" (click)="close()">Cancel</pi-button>
+    <pi-button type="primary" [disabled]="!form.valid" (click)="save()">Save</pi-button>
+  </div>
+</div>

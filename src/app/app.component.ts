@@ -6,7 +6,9 @@ import Compressor from 'compressorjs';
 import {PortalModule} from "@angular/cdk/portal";
 import {ShapesContainerComponent} from "./shapes-container/shapes-container.component";
 import {ShapesEnum} from "./shapes-enum";
-import { PiButtonModule } from "toll-ui/src/public-api";
+import {PiButtonModule} from "toll-ui";
+import {TestCompComponent} from "./test-comp/test-comp.component";
+import {BaseService} from "../core/base.service";
 
 declare var require: any;
 
@@ -30,10 +32,20 @@ export interface ElementInfo
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [NgSwitch, NgSwitchDefault, NgSwitchCase, TextFieldComponent, NgIf, FormsModule, PortalModule, ShapesContainerComponent, PiButtonModule]
+  imports: [
+    NgSwitch,
+    NgSwitchDefault,
+    NgSwitchCase,
+    TextFieldComponent,
+    NgIf,
+    FormsModule,
+    PortalModule,
+    ShapesContainerComponent,
+    PiButtonModule,
+    TestCompComponent]
 })
 export class AppComponent implements OnInit, AfterViewInit{
-  title = 'panvas';
+  title = 'tedit';
   @ViewChild('textcontainer', { read: ViewContainerRef }) entry!: ViewContainerRef;
   elements: Array<ElementInfo> = [];
   selectedElement: any;
@@ -71,7 +83,7 @@ export class AppComponent implements OnInit, AfterViewInit{
 
     this.unSelectItems(this.resizeEast, this.resizeWest, this.resizeSouthEast);
     container.classList.add('resizable', 'border', 'border-dashed', 'border-black', 'absolute', 'flex', 'items-center', 'p-2');
-    container.id = crypto.randomUUID();
+    container.id = BaseService.uuid();
 
     h1.innerHTML = 'Text goes here ...';
     h1.style.fontSize = '50px'
@@ -142,7 +154,7 @@ export class AppComponent implements OnInit, AfterViewInit{
 
     this.unSelectItems(this.resizeEast, this.resizeWest, this.resizeSouthEast);
     container.classList.add('resizable', 'border', 'border-dashed', 'border-black', 'cursor-move', 'absolute', 'flex', 'items-center', 'p-2');
-    container.id = crypto.randomUUID();
+    container.id = BaseService.uuid();
 
     circle.classList.add('rounded-full', 'outline', 'outline-black', 'outline-2');
     circle.style.width = '50px';
@@ -199,7 +211,7 @@ export class AppComponent implements OnInit, AfterViewInit{
 
     this.unSelectItems(this.resizeEast, this.resizeWest, this.resizeSouthEast);
     this.container.classList.add('resizable', 'border', 'border-dashed', 'border-black', 'cursor-move', 'absolute', 'flex', 'items-center', 'p-2');
-    this.container.id = crypto.randomUUID();
+    this.container.id = BaseService.uuid();
 
     square.classList.add('outline', 'outline-black', 'outline-2');
     square.style.width = '50px';
@@ -255,7 +267,7 @@ export class AppComponent implements OnInit, AfterViewInit{
 
     const container = document.createElement('div');
     container.classList.add('resizable', 'border', 'border-dashed', 'border-black', 'cursor-move', 'absolute', 'flex', 'items-center');
-    container.id = crypto.randomUUID();
+    container.id = BaseService.uuid();
 
 
     const image = document.createElement('img');

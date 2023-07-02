@@ -1,0 +1,5 @@
+<label for="{{id}}" class="flex items-center cursor-pointer container">
+    <input [disabled]="disabled" id="{{id}}" [(ngModel)]="value" (ngModelChange)="onChange($event)" type="checkbox" value="" class="sr-only peer">
+    <div class="mark bg-gray-200 w-4 h-4 rounded hover:bg-gray-300 peer-checked:bg-blue-600 after:top-0.5 after:left-[5px]"></div>
+    <ng-content></ng-content>
+</label>

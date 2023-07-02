@@ -1,0 +1,41 @@
+<div class="w-full flex h-full flex-col overflow-auto" id="closeCheckListButton" tabindex="-1" (keydown.escape)="close()">
+  <div class="h-auto flex w-full justify-end p-4">
+    <i class="fa-solid fa-xmark text-2xl cursor-pointer" (click)="close()"></i>
+  </div>
+  <div class="grow lg:h-[600px] h-full w-full overflow-auto">
+    <div class="w-full flex flex-col h-full overflow-auto divide-y">
+      <div class="h-auto w-full">
+        <form [formGroup]="form" class="space-y-3 p-4">
+          <div>
+            <pi-input formControlName="name" label="Check List Name"></pi-input>
+          </div>
+          <div>
+            <pi-check-box formControlName="useCategory">
+              <span class="ml-3">Use Categories</span>
+            </pi-check-box>
+          </div>
+        </form>
+        <div class="w-full flex justify-between p-4">
+          <span>Items</span>
+          <pi-button (click)="createNewItem()" size="extra small">Add Item</pi-button>
+        </div>
+      </div>
+      <div class="grow w-full overflow-auto">
+        <div class="p-4">
+          <div>
+            <pi-table
+              emptyMessage="This list is empty, click to create your first item above"
+              [actions]="tableActions"
+              (OnActionPerformed)="getActionPerformed($event)"
+              [data]="items"
+              [headers]="headers"></pi-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="h-auto flex space-x-2 w-full p-4">
+    <pi-button (click)="close()" type="danger">Cancel</pi-button>
+    <pi-button type="primary" [disabled]="!form.valid" (click)="save()">Save</pi-button>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<button
+        [class.w-full]="block === ''"
+        [disabled]="disabled || disabled === ''"
+        [ngClass]="piClass"
+        [ngStyle]="piStyle"
+        type="button"
+        [id]="id"
+        class="
+{{ size === 'extra small' ? xtra_small : ''}}
+{{ size === 'small' ? small : '' }}
+{{ size === 'normal' ? normal : '' }}
+{{ size === 'large' ? large : '' }}
+{{ size === 'extra large' ? xtra_large : '' }}
+
+{{ rounded === 'full' ? 'rounded-full' : 'rounded-lg' }}
+{{button_color()}}">
+    <ng-content></ng-content>
+</button>

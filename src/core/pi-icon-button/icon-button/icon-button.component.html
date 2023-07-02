@@ -1,0 +1,11 @@
+<button type="button"
+        [ngClass]="piClass"
+        [ngStyle]="piStyle"
+        class="focus:ring-4 focus:outline-none
+{{ size === 'small' ? small : ''}}
+{{ size === 'large' ? large : '' }}
+{{ size === 'normal' ? normal : '' }}
+{{ rounded === 'full' ? 'rounded-full' : 'rounded-lg' }}
+{{button_color()}} ">
+    <i class="{{icon}}"></i>
+</button>

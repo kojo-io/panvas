@@ -1,0 +1,68 @@
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <tr>
+      <ng-container *ngFor="let head of headers">
+        <ng-container *ngIf="head.name !== 'id'">
+          <th class="px-6 py-3">
+            {{head.alias}}
+          </th>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="actions.length > 0">
+        <th class="px-6 py-3">
+          actions
+        </th>
+      </ng-container>
+    </tr>
+    </thead>
+
+    <tbody>
+    <ng-container *ngIf="data.length > 0; else empty">
+      <ng-container *ngFor="let item of data;">
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+          <ng-container *ngFor="let head of headers">
+            <ng-container *ngIf="head.name !== 'id'">
+              <td class="px-6 py-4">
+                <ng-container *ngIf="head.type === 'boolean'">
+                  <pi-check-box [disabled]="true" [value]="item[head.name]"></pi-check-box>
+                </ng-container>
+                <ng-container *ngIf="head.type === 'string' ">
+                  {{item[head.name]}}
+                </ng-container>
+              </td>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="actions.length > 0">
+            <td class="px-6 py-4">
+              <div class="flex items-center space-x-3">
+                <ng-container *ngFor="let action of actions">
+                  <ng-container *ngIf="action.buttonType === 'icon-button'">
+                    <pi-icon-button (click)="OnActionPerformed.emit({ type: action.actionType, data: item })" [type]="action.buttonColor" [size]="'small'" [icon]="action.buttonTypeContent"></pi-icon-button>
+                  </ng-container>
+                  <ng-container *ngIf="action.buttonType === 'button'">
+                    <pi-button (click)="OnActionPerformed.emit({ type: action.actionType, data: item })" [type]="action.buttonColor" [size]="'small'">
+                      {{action.buttonTypeContent}}
+                    </pi-button>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </td>
+          </ng-container>
+        </tr>
+      </ng-container>
+    </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #empty>
+  <tr>
+    <td class="px-6 py-4" [colSpan]="headers.length">
+      <div class="w-full flex justify-center items-center">
+        {{emptyMessage}}
+      </div>
+    </td>
+  </tr>
+</ng-template>

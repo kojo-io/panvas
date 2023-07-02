@@ -1,0 +1,9 @@
+<div class="flex py-6">
+  <pi-button (click)="openCheckListModal()">ADD CHECK LIST</pi-button>
+</div>
+<pi-table
+  [headers]="tableHeaders"
+  [actions]="tableActions"
+  (OnActionPerformed)="getActionPerformed($event)"
+  [data]="checkList"
+  emptyMessage="This list is empty, click to create your first item above"></pi-table>
